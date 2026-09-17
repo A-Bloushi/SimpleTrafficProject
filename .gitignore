@@ -1,0 +1,6 @@
+.env
+.venv/
+run.log
+state.json
+test.py
+settings.json
