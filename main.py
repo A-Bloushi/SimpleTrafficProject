@@ -13,13 +13,13 @@ logging.basicConfig(
 
 load_dotenv()
 
-api_key = os.getenv("GOOGLE_MAPS_API_KEY")
+GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
 
 # google api key
-goog_url = "https://routes.googleapis.com/directions/v2:computeRoutes"
+GOOGLE_ROUTES_URL = "https://routes.googleapis.com/directions/v2:computeRoutes"
 
 # url for notification app
-ntfy_url = os.getenv("ntfy_url")
+NTFY_URL = os.getenv("ntfy_url")
 
 # max ratio of route time / route time with real traffic data
 THRESHOLD = 1.25
@@ -30,7 +30,7 @@ MY_DESTINATION_ADDRESS = json.loads(os.getenv("MY_DESTINATION_ADDRESS"))
 
 # api call parameters
 headers = {
-    "X-Goog-Api-Key": api_key,
+    "X-Goog-Api-Key": GOOGLE_MAPS_API_KEY,
     "X-Goog-FieldMask": "routes.duration,routes.staticDuration,routes.distanceMeters",
 }
 
@@ -42,7 +42,7 @@ body = {
     "routingPreference": "TRAFFIC_AWARE_OPTIMAL",
 }
 
-response = requests.post(goog_url, headers=headers, json=body)
+response = requests.post(GOOGLE_ROUTES_URL, headers=headers, json=body)
 
 
 logging.info(f"API Call Response Code: {response.reason}")
@@ -112,8 +112,8 @@ else:
 if new_status != previous_status:
     save_state(new_status)
     if new_status == "bad":
-        requests.post(ntfy_url, data=f"High Traffic Alert, {delayMinutes}m delay")
+        requests.post(NTFY_URL, data=f"High Traffic Alert, {delayMinutes}m delay")
         logging.warning(f"High Traffic Alert, {delayMinutes}m delay")
     else:
-        requests.post(ntfy_url, data="Traffic Back To Normal")
+        requests.post(NTFY_URL, data="Traffic Back To Normal")
         logging.info("Back To Normal Traffic Alert")
