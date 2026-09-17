@@ -67,7 +67,9 @@ delayMinutes = round(durationMin - staticDurationMin, 1)
 current_datetime = datetime.now()
 # return normal state with current date
 def default_state():
-    return {"status": "normal", "date": str(current_datetime.date()),"time":current_datetime.strftime("%I:%M:%S %p")}
+    state = {"status": "normal", "date": str(current_datetime.date()),"time":current_datetime.strftime("%I:%M:%S %p")}
+    save_state(state["status"])
+    return state
 
 
 # load current state and time from json file
@@ -77,9 +79,7 @@ def load_state():
             data = json.load(f)
             # compares date on file with today's date
             if data["date"] != str(current_datetime.date()):
-                state = default_state()
-                save_state(state["status"])
-                return state
+                return default_state()
             else:
                 return data
     except FileNotFoundError:
