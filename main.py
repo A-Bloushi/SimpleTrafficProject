@@ -2,7 +2,7 @@ import requests
 from dotenv import load_dotenv
 import os
 import json
-from datetime import date
+from datetime import datetime
 import logging
 
 logging.basicConfig(
@@ -64,10 +64,10 @@ delayMinutes = round(durationMin - staticDurationMin, 1)
 
 # delayRatio = 1.1 #for testing
 
-
+current_datetime = datetime.now()
 # return normal state with current date
 def default_state():
-    return {"status": "normal", "date": str(date.today())}
+    return {"status": "normal", "date": str(current_datetime.date()),"time":current_datetime.strftime("%I:%M:%S %p")}
 
 
 # load current state and time from json file
@@ -76,7 +76,7 @@ def load_state():
         with open("state.json", "r") as f:
             data = json.load(f)
             # compares date on file with today's date
-            if data["date"] != str(date.today()):
+            if data["date"] != str(current_datetime.date()):
                 state = default_state()
                 save_state(state["status"])
                 return state
@@ -90,7 +90,7 @@ def load_state():
 # save current state and time to json file
 def save_state(state):
     with open("state.json", "w") as f:
-        stateTime = {"status": state, "date": str(date.today())}
+        stateTime = {"status": state, "date": str(current_datetime.date()),"time":current_datetime.strftime("%I:%M:%S %p")}
         json.dump(stateTime, f)
 
 
