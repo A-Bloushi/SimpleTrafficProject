@@ -8,7 +8,7 @@ import logging
 logging.basicConfig(
     filename="run.log",
     level=logging.INFO,
-    format="%(asctime)s %(levelname)s %(message)s"
+    format="%(asctime)s %(levelname)s %(message)s",
 )
 
 load_dotenv()
@@ -65,9 +65,15 @@ delayMinutes = round(durationMin - staticDurationMin, 1)
 # delayRatio = 1.1 #for testing
 
 current_datetime = datetime.now()
+
+
 # return normal state with current date
 def default_state():
-    state = {"status": "normal", "date": str(current_datetime.date()),"time":current_datetime.strftime("%I:%M:%S %p")}
+    state = {
+        "status": "normal",
+        "date": str(current_datetime.date()),
+        "time": current_datetime.strftime("%I:%M:%S %p"),
+    }
     save_state(state["status"])
     return state
 
@@ -90,7 +96,11 @@ def load_state():
 # save current state and time to json file
 def save_state(state):
     with open("state.json", "w") as f:
-        stateTime = {"status": state, "date": str(current_datetime.date()),"time":current_datetime.strftime("%I:%M:%S %p")}
+        stateTime = {
+            "status": state,
+            "date": str(current_datetime.date()),
+            "time": current_datetime.strftime("%I:%M:%S %p"),
+        }
         json.dump(stateTime, f)
 
 
@@ -99,7 +109,9 @@ current_state = load_state()
 previous_status = current_state["status"]
 
 
-logging.info(f"Delay Ratio is {delayRatio}, Total Delay is {delayMinutes}m, Duration To Destination is {durationMin}m, Distance To Destination is {routes['distanceMeters']/1000}km")
+logging.info(
+    f"Delay Ratio is {delayRatio}, Total Delay is {delayMinutes}m, Duration To Destination is {durationMin}m, Distance To Destination is {routes['distanceMeters']/1000}km"
+)
 
 
 # calculate if there is traffic
