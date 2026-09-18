@@ -2,7 +2,6 @@ from datetime import datetime
 import json
 import logging
 
-
 logging.basicConfig(
     filename="run.log",
     level=logging.INFO,
@@ -10,6 +9,7 @@ logging.basicConfig(
 )
 
 current_datetime = datetime.now()
+
 
 # return normal state with current date
 def default_state():
