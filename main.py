@@ -5,6 +5,11 @@ import json
 from datetime import datetime
 import logging
 
+#Other files
+import notify
+
+
+
 logging.basicConfig(
     filename="run.log",
     level=logging.INFO,
@@ -18,8 +23,7 @@ GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
 # google api key
 GOOGLE_ROUTES_URL = "https://routes.googleapis.com/directions/v2:computeRoutes"
 
-# url for notification app
-NTFY_URL = os.getenv("ntfy_url")
+
 
 # max ratio of route time / route time with real traffic data
 THRESHOLD = 1.25
@@ -124,8 +128,8 @@ else:
 if new_status != previous_status:
     save_state(new_status)
     if new_status == "bad":
-        requests.post(NTFY_URL, data=f"High Traffic Alert, {delayMinutes}m delay")
+        notify.send_notifications(f"High Traffic Alert, {delayMinutes}m delay")
         logging.warning(f"High Traffic Alert, {delayMinutes}m delay")
     else:
-        requests.post(NTFY_URL, data="Traffic Back To Normal")
+        notify.send_notifications("Traffic Back To Normal")
         logging.info("Back To Normal Traffic Alert")
