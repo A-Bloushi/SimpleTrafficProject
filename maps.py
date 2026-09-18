@@ -28,6 +28,6 @@ body = {
 
 
 def get_route():
-    response = requests.post(GOOGLE_ROUTES_URL, headers=headers, json=body)
+    response = requests.post(GOOGLE_ROUTES_URL, headers=headers, json=body,timeout=10)
     logging.info(f"API Call Response Code: {response.reason}")
     return response.json()["routes"][0]

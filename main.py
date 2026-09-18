@@ -49,8 +49,8 @@ else:
 if new_status != previous_status:
     state.save_state(new_status)
     if new_status == "bad":
-        notify.send_notifications(f"High Traffic Alert, {delay_minutes}m delay")
+        notify.send_notification(f"High Traffic Alert, {delay_minutes}m delay")
         logging.warning(f"High Traffic Alert, {delay_minutes}m delay")
     else:
-        notify.send_notifications("Traffic Back To Normal")
+        notify.send_notification("Traffic Back To Normal")
         logging.info("Back To Normal Traffic Alert")

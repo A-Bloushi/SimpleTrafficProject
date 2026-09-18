@@ -8,5 +8,5 @@ load_dotenv()
 NTFY_URL = os.getenv("ntfy_url")
 
 
-def send_notifications(data):
+def send_notification(data):
     requests.post(NTFY_URL, data)
