@@ -8,15 +8,16 @@ logging.basicConfig(
     format="%(asctime)s %(levelname)s %(message)s",
 )
 
-current_datetime = datetime.now()
+def get_current_datetime():
+    return datetime.now()
 
 
 # return normal state with current date
 def default_state():
     state = {
         "status": "normal",
-        "date": str(current_datetime.date()),
-        "time": current_datetime.strftime("%I:%M:%S %p"),
+        "date": str(get_current_datetime.date()),
+        "time": get_current_datetime.strftime("%I:%M:%S %p"),
     }
     save_state(state["status"])
     return state
@@ -28,7 +29,7 @@ def load_state():
         with open("state.json", "r") as f:
             data = json.load(f)
             # compares date on file with today's date
-            if data["date"] != str(current_datetime.date()):
+            if data["date"] != str(get_current_datetime.date()):
                 return default_state()
             else:
                 return data
@@ -42,7 +43,7 @@ def save_state(state):
     with open("state.json", "w") as f:
         stateTime = {
             "status": state,
-            "date": str(current_datetime.date()),
-            "time": current_datetime.strftime("%I:%M:%S %p"),
+            "date": str(get_current_datetime.date()),
+            "time": get_current_datetime.strftime("%I:%M:%S %p"),
         }
         json.dump(stateTime, f)
