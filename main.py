@@ -7,6 +7,8 @@ import logging
 
 #Other files
 import notify
+import state
+import maps
 
 
 
@@ -68,48 +70,12 @@ delayMinutes = round(durationMin - staticDurationMin, 1)
 
 # delayRatio = 1.1 #for testing
 
-current_datetime = datetime.now()
 
 
-# return normal state with current date
-def default_state():
-    state = {
-        "status": "normal",
-        "date": str(current_datetime.date()),
-        "time": current_datetime.strftime("%I:%M:%S %p"),
-    }
-    save_state(state["status"])
-    return state
-
-
-# load current state and time from json file
-def load_state():
-    try:
-        with open("state.json", "r") as f:
-            data = json.load(f)
-            # compares date on file with today's date
-            if data["date"] != str(current_datetime.date()):
-                return default_state()
-            else:
-                return data
-    except FileNotFoundError:
-        logging.warning("state.json Doesn't Exist!")
-        return default_state()
-
-
-# save current state and time to json file
-def save_state(state):
-    with open("state.json", "w") as f:
-        stateTime = {
-            "status": state,
-            "date": str(current_datetime.date()),
-            "time": current_datetime.strftime("%I:%M:%S %p"),
-        }
-        json.dump(stateTime, f)
 
 
 # get state from file
-current_state = load_state()
+current_state = state.load_state()
 previous_status = current_state["status"]
 
 
@@ -126,7 +92,7 @@ else:
 
 # if there is a change in state, bad to normal and normal to bad
 if new_status != previous_status:
-    save_state(new_status)
+    state.save_state(new_status)
     if new_status == "bad":
         notify.send_notifications(f"High Traffic Alert, {delayMinutes}m delay")
         logging.warning(f"High Traffic Alert, {delayMinutes}m delay")
