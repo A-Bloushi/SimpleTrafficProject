@@ -5,3 +5,4 @@ state.json
 test.py
 settings.json
 __pycache__/
+history.db
